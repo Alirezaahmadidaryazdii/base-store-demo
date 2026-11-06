@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ShoppingBag, UserRound, Menu, Heart, X } from "lucide-react";
+import {
+  Search,
+  ShoppingBag,
+  UserRound,
+  Menu,
+  Heart,
+  X,
+  LogIn,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -119,12 +127,16 @@ export function Header() {
 
             <Link
               href={isAuthenticated ? "/account" : "/login"}
-              aria-label="حساب کاربری"
-              className="hidden sm:flex items-center gap-2 rounded-full bg-[var(--color-primary)] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)]"
+              aria-label={isAuthenticated ? "حساب کاربری" : "ورود / ثبت‌نام"}
+              className="flex h-9 items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-3 text-white transition-colors hover:bg-[var(--color-primary-hover)] sm:px-5"
             >
-              <UserRound size={18} strokeWidth={1.8} />
+              {isAuthenticated ? (
+                <UserRound size={18} strokeWidth={1.8} />
+              ) : (
+                <LogIn size={18} strokeWidth={1.8} />
+              )}
 
-              <span className="max-w-[110px] truncate whitespace-nowrap">
+              <span className="hidden whitespace-nowrap text-sm font-medium sm:inline">
                 {isAuthenticated ? user?.name : "ورود / ثبت‌نام"}
               </span>
             </Link>
