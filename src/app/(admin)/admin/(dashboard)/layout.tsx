@@ -35,8 +35,10 @@ export default function AdminLayout({
             onMenuClick={() => setIsSidebarOpen(true)}
           />
 
-          <main className="p-3 sm:p-4 lg:p-6">
-            {children}
+          <main className="pt-[68px] sm:pt-[76px]">
+            <div className="p-3 sm:p-4 lg:p-6">
+              {children}
+            </div>
           </main>
         </div>
       </div>

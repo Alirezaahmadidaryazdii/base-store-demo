@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -69,7 +70,6 @@ export default function CategoriesPage() {
   }, [categories, search, status]);
 
   const activeCount = categories.filter((category) => category.isActive).length;
-
   const inactiveCount = categories.length - activeCount;
 
   function handleAdd() {
@@ -119,44 +119,36 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-6 pb-24 lg:pb-0">
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="text-2xl font-bold">مدیریت دسته‌بندی‌ها</h1>
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <h1 className="text-xl font-bold sm:text-2xl">
+            مدیریت دسته‌بندی‌ها
+          </h1>
+
           <p className="mt-2 text-sm text-muted">
             دسته‌بندی‌های فروشگاه را مدیریت کنید.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl font-bold sm:text-2xl">
-              مدیریت دسته‌بندی‌ها
-            </h1>
-            <p className="mt-2 text-sm text-muted">
-              دسته‌بندی‌های فروشگاه را مدیریت کنید.
-            </p>
-          </div>
+        <button
+          type="button"
+          onClick={handleAdd}
+          className="hidden h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
+        >
+          <Plus size={18} />
+          افزودن دسته‌بندی
+        </button>
+      </div>
 
-          <button
-            type="button"
-            onClick={handleAdd}
-            className="hidden h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
-          >
-            <Plus size={18} />
-            افزودن دسته‌بندی
-          </button>
-
-          <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
-            <button
-              type="button"
-              onClick={handleAdd}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
-            >
-              <Plus size={19} />
-              افزودن دسته‌بندی جدید
-            </button>
-          </div>
-        </div>
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+        <button
+          type="button"
+          onClick={handleAdd}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+        >
+          <Plus size={19} />
+          افزودن دسته‌بندی جدید
+        </button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -256,6 +248,7 @@ function StatCard({
     <div className="rounded-xl border border-border bg-surface p-5">
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted">{title}</span>
+
         <span className="rounded-lg bg-primary/10 p-2 text-primary">
           {icon}
         </span>

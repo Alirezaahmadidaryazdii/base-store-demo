@@ -1,8 +1,14 @@
-
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { UserPlus, Users, ShieldCheck, UserRound, UserX, AlertCircle } from "lucide-react";
+import {
+  UserPlus,
+  Users,
+  ShieldCheck,
+  UserRound,
+  UserX,
+  AlertCircle,
+} from "lucide-react";
 
 import type { Order } from "@/types/order";
 import type {
@@ -116,9 +122,7 @@ export default function UsersPage() {
     setEditingUser(null);
   };
 
-  const handleFormSubmit = (
-    data: CreateUserData | UpdateUserData
-  ) => {
+  const handleFormSubmit = (data: CreateUserData | UpdateUserData) => {
     try {
       setError("");
       setSuccess("");
@@ -133,12 +137,12 @@ export default function UsersPage() {
           (data.role !== "admin" || !data.isActive)
         ) {
           const activeAdmins = users.filter(
-            (user) => user.role === "admin" && user.isActive
+            (user) => user.role === "admin" && user.isActive,
           );
 
           if (activeAdmins.length <= 1) {
             throw new Error(
-              "آخرین مدیر فعال سیستم قابل غیرفعال شدن یا تغییر نقش نیست."
+              "آخرین مدیر فعال سیستم قابل غیرفعال شدن یا تغییر نقش نیست.",
             );
           }
         }
@@ -150,9 +154,7 @@ export default function UsersPage() {
       refreshUsers();
       handleFormClose();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "عملیات با خطا مواجه شد."
-      );
+      setError(err instanceof Error ? err.message : "عملیات با خطا مواجه شد.");
     }
   };
 
@@ -175,14 +177,10 @@ export default function UsersPage() {
       }
 
       setSuccess(
-        user.isActive
-          ? "حساب کاربر غیرفعال شد."
-          : "حساب کاربر فعال شد."
+        user.isActive ? "حساب کاربر غیرفعال شد." : "حساب کاربر فعال شد.",
       );
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "تغییر وضعیت انجام نشد."
-      );
+      setError(err instanceof Error ? err.message : "تغییر وضعیت انجام نشد.");
     }
   };
 
@@ -204,54 +202,41 @@ export default function UsersPage() {
       refreshUsers();
       setSuccess("کاربر با موفقیت حذف شد.");
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "حذف کاربر انجام نشد."
-      );
+      setError(err instanceof Error ? err.message : "حذف کاربر انجام نشد.");
     }
   };
 
   return (
     <div className="space-y-6 pb-24 lg:pb-0">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-bold">مدیریت کاربران</h1>
-          <p className="mt-1 text-sm text-muted">
-            مدیریت حساب‌ها، نقش‌ها و سوابق خرید کاربران فروشگاه
-          </p>
+        <div className="flex w-full min-w-0 items-center justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold sm:text-2xl">مدیریت کاربران</h1>
+            <p className="mt-1 text-sm text-muted">
+              مدیریت حساب‌ها، نقش‌ها و سوابق خرید کاربران فروشگاه
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={openCreateForm}
+            className="hidden h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
+          >
+            <UserPlus size={18} />
+            افزودن کاربر
+          </button>
         </div>
 
-        
-<div className="flex flex-wrap items-center justify-between gap-4">
-  <div>
-    <h1 className="text-xl font-bold sm:text-2xl">
-      مدیریت کاربران
-    </h1>
-    <p className="mt-1 text-sm text-muted">
-      مدیریت حساب‌ها، نقش‌ها و سوابق خرید کاربران فروشگاه
-    </p>
-  </div>
-
-  <button
-    type="button"
-    onClick={openCreateForm}
-    className="hidden h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
-  >
-    <UserPlus size={18} />
-    افزودن کاربر
-  </button>
-
-  <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
-    <button
-      type="button"
-      onClick={openCreateForm}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
-    >
-      <UserPlus size={19} />
-      افزودن کاربر جدید
-    </button>
-  </div>
-</div>
-
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+          <button
+            type="button"
+            onClick={openCreateForm}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+          >
+            <UserPlus size={19} />
+            افزودن کاربر جدید
+          </button>
+        </div>
       </div>
 
       {error && (

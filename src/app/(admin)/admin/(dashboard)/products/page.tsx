@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -38,6 +39,7 @@ export default function ProductsPage() {
 
       if (savedProducts) {
         const parsedProducts: unknown = JSON.parse(savedProducts);
+
         setProducts(
           Array.isArray(parsedProducts)
             ? (parsedProducts as Product[])
@@ -55,6 +57,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     if (!isHydrated) return;
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
   }, [products, isHydrated]);
 
@@ -147,44 +150,36 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-6 pb-24 lg:pb-0">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">مدیریت محصولات</h1>
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <h1 className="text-xl font-bold text-foreground sm:text-2xl">
+            مدیریت محصولات
+          </h1>
+
           <p className="mt-2 text-sm text-muted">
             مدیریت محصولات فروشگاه {storeConfig.name}
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl font-bold text-foreground sm:text-2xl">
-              مدیریت محصولات
-            </h1>
-            <p className="mt-2 text-sm text-muted">
-              مدیریت محصولات فروشگاه {storeConfig.name}
-            </p>
-          </div>
+        <button
+          type="button"
+          onClick={openCreateForm}
+          className="hidden h-11 shrink-0 items-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
+        >
+          <Plus size={17} />
+          افزودن محصول
+        </button>
+      </div>
 
-          <button
-            type="button"
-            onClick={openCreateForm}
-            className="hidden items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
-          >
-            <Plus size={17} />
-            افزودن محصول
-          </button>
-
-          <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
-            <button
-              type="button"
-              onClick={openCreateForm}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
-            >
-              <Plus size={19} />
-              افزودن محصول جدید
-            </button>
-          </div>
-        </div>
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+        <button
+          type="button"
+          onClick={openCreateForm}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+        >
+          <Plus size={19} />
+          افزودن محصول جدید
+        </button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -204,7 +199,9 @@ export default function ProductsPage() {
 
         <div className="rounded-xl border border-border bg-surface p-5">
           <p className="text-sm text-muted">محصولات غیرفعال</p>
-          <p className="mt-2 text-2xl font-bold text-muted">{inactiveCount}</p>
+          <p className="mt-2 text-2xl font-bold text-muted">
+            {inactiveCount}
+          </p>
         </div>
       </div>
 
@@ -220,6 +217,7 @@ export default function ProductsPage() {
 
       <div className="flex items-center justify-between">
         <h2 className="font-semibold text-foreground">فهرست محصولات</h2>
+
         <span className="text-sm text-muted">
           {filteredProducts.length} محصول
         </span>
