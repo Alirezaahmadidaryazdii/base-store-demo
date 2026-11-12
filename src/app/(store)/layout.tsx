@@ -1,4 +1,6 @@
 
+import { Suspense } from "react";
+
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
@@ -9,8 +11,12 @@ export default function StoreLayout({
 }) {
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <Header />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
+
       <main>{children}</main>
+
       <Footer />
     </div>
   );
