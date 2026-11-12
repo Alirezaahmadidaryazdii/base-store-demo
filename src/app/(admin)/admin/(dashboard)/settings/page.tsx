@@ -1,4 +1,4 @@
-  
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -125,9 +125,11 @@ function Toggle({
 }: ToggleProps) {
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border border-border bg-background p-4">
-      <div>
+      <div className="min-w-0">
         <p className="text-sm font-medium">{title}</p>
-        <p className="mt-1 text-xs text-muted">{description}</p>
+        <p className="mt-1 text-xs leading-5 text-muted">
+          {description}
+        </p>
       </div>
 
       <button
@@ -466,44 +468,46 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-28 lg:pb-0">
       <div>
-        <h1 className="text-xl font-bold">تنظیمات فروشگاه</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">
+          تنظیمات فروشگاه
+        </h1>
         <p className="mt-1 text-sm text-muted">
           مدیریت اطلاعات و پیکربندی فروشگاه {settings.general.name}
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[230px_1fr]">
-        <aside className="h-fit rounded-xl border border-border bg-surface p-3">
+      <div className="grid gap-5 lg:grid-cols-[230px_1fr] lg:gap-6">
+        <aside className="h-fit min-w-0 rounded-xl border border-border bg-surface p-3">
           <div className="mb-3 flex items-center gap-2 px-3 py-2">
-            <Settings size={19} className="text-primary" />
+            <Settings size={19} className="shrink-0 text-primary" />
             <span className="font-semibold">بخش‌های تنظیمات</span>
           </div>
 
-          <nav className="flex gap-2 overflow-x-auto lg:flex-col">
+          <nav className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex shrink-0 items-center gap-3 rounded-lg px-3 py-3 text-sm transition lg:w-full ${
+                className={`flex min-h-11 shrink-0 items-center gap-2.5 rounded-lg px-3 py-3 text-sm transition lg:w-full lg:gap-3 ${
                   activeTab === tab.id
                     ? "bg-primary text-white"
                     : "text-muted hover:bg-background hover:text-foreground"
                 }`}
               >
                 {tab.icon}
-                {tab.label}
+                <span className="whitespace-nowrap">{tab.label}</span>
               </button>
             ))}
           </nav>
         </aside>
 
-        <section className="min-w-0 rounded-xl border border-border bg-surface p-5 sm:p-6">
+        <section className="min-w-0 rounded-xl border border-border bg-surface p-4 sm:p-6">
           {renderContent()}
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8 hidden border-t border-border pt-5 lg:flex lg:items-center lg:justify-between">
             <button
               type="button"
               onClick={handleReset}
@@ -513,9 +517,9 @@ export default function SettingsPage() {
               بازگردانی پیش‌فرض
             </button>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-4">
               {saved && (
-                <span className="flex items-center justify-center gap-1 text-sm text-green-600">
+                <span className="flex items-center gap-1 text-sm text-green-600">
                   <CheckCircle2 size={17} />
                   تنظیمات ذخیره شد
                 </span>
@@ -532,6 +536,35 @@ export default function SettingsPage() {
             </div>
           </div>
         </section>
+
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleReset}
+              aria-label="بازگردانی تنظیمات به حالت پیش‌فرض"
+              className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-border text-muted transition hover:border-red-300 hover:text-red-500"
+            >
+              <RotateCcw size={18} />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSave}
+              className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+            >
+              <Save size={18} />
+              ذخیره تغییرات
+            </button>
+          </div>
+
+          {saved && (
+            <p className="mt-2 flex items-center justify-center gap-1 text-xs text-green-600">
+              <CheckCircle2 size={14} />
+              تنظیمات ذخیره شد
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

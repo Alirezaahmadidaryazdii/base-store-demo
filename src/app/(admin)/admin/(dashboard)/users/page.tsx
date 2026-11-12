@@ -211,7 +211,7 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24 lg:pb-0">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-bold">مدیریت کاربران</h1>
@@ -220,14 +220,38 @@ export default function UsersPage() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={openCreateForm}
-          className="flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover"
-        >
-          <UserPlus size={18} />
-          افزودن کاربر
-        </button>
+        
+<div className="flex flex-wrap items-center justify-between gap-4">
+  <div>
+    <h1 className="text-xl font-bold sm:text-2xl">
+      مدیریت کاربران
+    </h1>
+    <p className="mt-1 text-sm text-muted">
+      مدیریت حساب‌ها، نقش‌ها و سوابق خرید کاربران فروشگاه
+    </p>
+  </div>
+
+  <button
+    type="button"
+    onClick={openCreateForm}
+    className="hidden h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
+  >
+    <UserPlus size={18} />
+    افزودن کاربر
+  </button>
+
+  <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+    <button
+      type="button"
+      onClick={openCreateForm}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+    >
+      <UserPlus size={19} />
+      افزودن کاربر جدید
+    </button>
+  </div>
+</div>
+
       </div>
 
       {error && (

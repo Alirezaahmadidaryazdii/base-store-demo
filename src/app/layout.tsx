@@ -48,7 +48,7 @@ export default function RootLayout({
       <body className={pelak.variable}>
         <ThemeProvider>
           <CartProvider>
-            {children}
+            <main className="pb-28 lg:pb-0">{children}</main>
             <Toaster />
           </CartProvider>
         </ThemeProvider>

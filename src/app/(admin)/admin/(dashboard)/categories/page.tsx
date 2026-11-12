@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -22,10 +21,10 @@ export default function CategoriesPage() {
   const [status, setStatus] = useState("all");
 
   const [formOpen, setFormOpen] = useState(false);
-  const [editingCategory, setEditingCategory] =
-    useState<Category | null>(null);
-  const [deletingCategory, setDeletingCategory] =
-    useState<Category | null>(null);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [deletingCategory, setDeletingCategory] = useState<Category | null>(
+    null,
+  );
 
   useEffect(() => {
     try {
@@ -69,9 +68,7 @@ export default function CategoriesPage() {
     });
   }, [categories, search, status]);
 
-  const activeCount = categories.filter(
-    (category) => category.isActive
-  ).length;
+  const activeCount = categories.filter((category) => category.isActive).length;
 
   const inactiveCount = categories.length - activeCount;
 
@@ -91,7 +88,7 @@ export default function CategoriesPage() {
 
       if (exists) {
         return current.map((item) =>
-          item.id === category.id ? category : item
+          item.id === category.id ? category : item,
         );
       }
 
@@ -106,7 +103,7 @@ export default function CategoriesPage() {
     if (!deletingCategory) return;
 
     setCategories((current) =>
-      current.filter((item) => item.id !== deletingCategory.id)
+      current.filter((item) => item.id !== deletingCategory.id),
     );
 
     setDeletingCategory(null);
@@ -115,15 +112,13 @@ export default function CategoriesPage() {
   function handleStatusChange(id: string, value: boolean) {
     setCategories((current) =>
       current.map((category) =>
-        category.id === id
-          ? { ...category, isActive: value }
-          : category
-      )
+        category.id === id ? { ...category, isActive: value } : category,
+      ),
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24 lg:pb-0">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold">مدیریت دسته‌بندی‌ها</h1>
@@ -132,14 +127,36 @@ export default function CategoriesPage() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAdd}
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover"
-        >
-          <Plus size={18} />
-          افزودن دسته‌بندی
-        </button>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-bold sm:text-2xl">
+              مدیریت دسته‌بندی‌ها
+            </h1>
+            <p className="mt-2 text-sm text-muted">
+              دسته‌بندی‌های فروشگاه را مدیریت کنید.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleAdd}
+            className="hidden h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
+          >
+            <Plus size={18} />
+            افزودن دسته‌بندی
+          </button>
+
+          <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+            <button
+              type="button"
+              onClick={handleAdd}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+            >
+              <Plus size={19} />
+              افزودن دسته‌بندی جدید
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
