@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useMemo, useState } from "react";
@@ -7,7 +6,7 @@ import {
   X,
   RotateCcw,
   PackageSearch,
-  ChevronDown,
+  Check,
 } from "lucide-react";
 
 import { ProductCard } from "@/components/product/product-card";
@@ -27,6 +26,7 @@ const sortOptions = [
 ];
 
 function FilterContent({
+  idPrefix,
   categoryId,
   setCategoryId,
   minPrice,
@@ -37,6 +37,7 @@ function FilterContent({
   setInStockOnly,
   onReset,
 }: {
+  idPrefix: string;
   categoryId: string;
   setCategoryId: (value: string) => void;
   minPrice: string;
@@ -52,10 +53,12 @@ function FilterContent({
       <div>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-semibold">دسته‌بندی</h3>
+
           {categoryId && (
             <button
+              type="button"
               onClick={() => setCategoryId("")}
-              className="text-xs text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+              className="text-xs text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
             >
               حذف
             </button>
@@ -78,13 +81,27 @@ function FilterContent({
                 {category.name}
               </span>
 
-              <input
-                type="radio"
-                name="category"
-                checked={categoryId === category.id}
-                onChange={() => setCategoryId(category.id)}
-                className="size-4 accent-[var(--color-primary)]"
-              />
+              <span className="relative flex size-5 shrink-0 items-center justify-center">
+  <input
+    type="radio"
+    name={`${idPrefix}-category`}
+    checked={categoryId === category.id}
+    onChange={() => setCategoryId(category.id)}
+    className="peer absolute inset-0 size-full cursor-pointer opacity-0"
+  />
+
+  <span
+    className={`flex size-[18px] items-center justify-center rounded-full border transition-all ${
+      categoryId === category.id
+        ? "border-[var(--color-primary)]"
+        : "border-[var(--color-border)]"
+    } peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-primary)] peer-focus-visible:ring-offset-2`}
+  >
+    {categoryId === category.id && (
+      <span className="size-2.5 rounded-full bg-[var(--color-primary)]" />
+    )}
+  </span>
+</span>
             </label>
           ))}
         </div>
@@ -92,17 +109,39 @@ function FilterContent({
 
       <div className="h-px bg-[var(--color-border)]" />
 
-      <label className="flex cursor-pointer items-center justify-between">
-        <span className="text-sm">فقط محصولات موجود</span>
-        <input
-          type="checkbox"
-          checked={inStockOnly}
-          onChange={(event) => setInStockOnly(event.target.checked)}
-          className="size-4 accent-[var(--color-primary)]"
-        />
+      <label
+        htmlFor={`${idPrefix}-in-stock`}
+        className="flex cursor-pointer items-center justify-between"
+      >
+        <span className="text-sm text-[var(--color-foreground)]">
+          فقط محصولات موجود
+        </span>
+
+        <span className="relative flex items-center">
+          <input
+            id={`${idPrefix}-in-stock`}
+            type="checkbox"
+            checked={inStockOnly}
+            onChange={(event) => setInStockOnly(event.target.checked)}
+            className="peer sr-only"
+          />
+
+          <span
+            className={`flex size-5 items-center justify-center rounded-[5px] border transition-all ${
+              inStockOnly
+                ? "border-[var(--color-primary)] bg-[var(--color-primary)]"
+                : "border-[var(--color-border)] bg-[var(--color-background)]"
+            } peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-primary)] peer-focus-visible:ring-offset-2`}
+          >
+            {inStockOnly && (
+              <Check size={13} strokeWidth={3} className="text-white" />
+            )}
+          </span>
+        </span>
       </label>
 
       <button
+        type="button"
         onClick={onReset}
         className="flex h-11 w-full items-center justify-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] text-xs transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
       >
@@ -132,26 +171,20 @@ export function ShopProducts({ products }: ShopProductsProps) {
     let result = [...products];
 
     if (categoryId) {
-      result = result.filter(
-        (product) => product.categoryId === categoryId
-      );
+      result = result.filter((product) => product.categoryId === categoryId);
     }
 
     if (minPrice) {
-      result = result.filter(
-        (product) => product.price >= Number(minPrice)
-      );
+      result = result.filter((product) => product.price >= Number(minPrice));
     }
 
     if (maxPrice) {
-      result = result.filter(
-        (product) => product.price <= Number(maxPrice)
-      );
+      result = result.filter((product) => product.price <= Number(maxPrice));
     }
 
     if (inStockOnly) {
       result = result.filter((product) =>
-        product.variants.some((variant) => variant.stock > 0)
+        product.variants.some((variant) => variant.stock > 0),
       );
     }
 
@@ -168,15 +201,14 @@ export function ShopProducts({ products }: ShopProductsProps) {
         result.sort(
           (a, b) =>
             Number(b.tags.includes("پرفروش")) -
-            Number(a.tags.includes("پرفروش"))
+            Number(a.tags.includes("پرفروش")),
         );
         break;
 
       default:
         result.sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() -
-            new Date(a.createdAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
     }
 
@@ -192,41 +224,39 @@ export function ShopProducts({ products }: ShopProductsProps) {
 
   return (
     <section>
-      
-<div className="mb-6 flex min-h-14 items-center justify-between border-b border-[var(--color-border)] py-3">
-  <div className="flex items-center gap-4">
-    <button
-      onClick={() => setShowFilters(true)}
-      className="flex h-9 items-center gap-2 text-xs transition-colors hover:text-[var(--color-primary)] lg:hidden"
-    >
-      <SlidersHorizontal size={16} />
-      فیلترها
-      {activeFiltersCount > 0 && (
-        <span className="flex size-5 items-center justify-center rounded-full bg-[var(--color-primary)] text-[10px] text-white">
-          {activeFiltersCount}
-        </span>
-      )}
-    </button>
+      <div className="mb-6 flex min-h-14 items-center justify-between border-b border-[var(--color-border)] py-3">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setShowFilters(true)}
+            className="flex h-9 items-center gap-2 text-xs transition-colors hover:text-[var(--color-primary)] lg:hidden"
+          >
+            <SlidersHorizontal size={16} />
+            فیلترها
+            {activeFiltersCount > 0 && (
+              <span className="flex size-5 items-center justify-center rounded-full bg-[var(--color-primary)] text-[10px] text-white">
+                {activeFiltersCount}
+              </span>
+            )}
+          </button>
 
-    <span className="text-xs text-[var(--color-muted)]">
-      {filteredProducts.length.toLocaleString("fa-IR")} محصول
-    </span>
-  </div>
+          <span className="text-xs text-[var(--color-muted)]">
+            {filteredProducts.length.toLocaleString("fa-IR")} محصول
+          </span>
+        </div>
 
-  <div className="flex items-center gap-2">
-    <span className="hidden text-xs text-[var(--color-muted)] sm:block">
-      مرتب‌سازی:
-    </span>
+        <div className="flex items-center gap-2">
+          <span className="hidden text-xs text-[var(--color-muted)] sm:block">
+            مرتب‌سازی:
+          </span>
 
-    <CustomSelect
-      value={sortBy}
-      options={sortOptions}
-      onChange={setSortBy}
-      className="w-36"
-    />
-  </div>
-</div>
-
+          <CustomSelect
+            value={sortBy}
+            options={sortOptions}
+            onChange={setSortBy}
+            className="w-36"
+          />
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
         <aside className="hidden lg:block">
@@ -240,6 +270,7 @@ export function ShopProducts({ products }: ShopProductsProps) {
             </div>
 
             <FilterContent
+              idPrefix="desktop"
               categoryId={categoryId}
               setCategoryId={setCategoryId}
               minPrice={minPrice}
@@ -318,9 +349,7 @@ export function ShopProducts({ products }: ShopProductsProps) {
                 strokeWidth={1.3}
                 className="mb-4 text-[var(--color-muted)]"
               />
-              <h3 className="text-base font-semibold">
-                محصولی پیدا نشد
-              </h3>
+              <h3 className="text-base font-semibold">محصولی پیدا نشد</h3>
               <p className="mt-2 text-sm text-[var(--color-muted)]">
                 فیلترهای انتخاب‌شده را تغییر دهید.
               </p>
@@ -356,6 +385,7 @@ export function ShopProducts({ products }: ShopProductsProps) {
             </div>
 
             <FilterContent
+              idPrefix="desktop"
               categoryId={categoryId}
               setCategoryId={setCategoryId}
               minPrice={minPrice}

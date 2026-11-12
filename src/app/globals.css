@@ -145,3 +145,14 @@
     padding-inline: 16px;
   }
 }
+
+
+/* Hide horizontal scrollbar while preserving scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -29,7 +29,7 @@ export default function ProductsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingProductId, setDeletingProductId] = useState<string | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -38,7 +38,11 @@ export default function ProductsPage() {
 
       if (savedProducts) {
         const parsedProducts: unknown = JSON.parse(savedProducts);
-        setProducts(Array.isArray(parsedProducts) ? parsedProducts as Product[] : mockProducts);
+        setProducts(
+          Array.isArray(parsedProducts)
+            ? (parsedProducts as Product[])
+            : mockProducts,
+        );
       } else {
         setProducts(mockProducts);
       }
@@ -96,8 +100,8 @@ export default function ProductsPage() {
         current.map((product) =>
           product.id === editingProduct.id
             ? { ...editingProduct, ...data }
-            : product
-        )
+            : product,
+        ),
       );
     } else {
       const newProduct: Product = {
@@ -116,7 +120,7 @@ export default function ProductsPage() {
     if (!deletingProductId) return;
 
     setProducts((current) =>
-      current.filter((product) => product.id !== deletingProductId)
+      current.filter((product) => product.id !== deletingProductId),
     );
 
     setDeletingProductId(null);
@@ -125,10 +129,8 @@ export default function ProductsPage() {
   function handleStatusChange(productId: string, value: boolean) {
     setProducts((current) =>
       current.map((product) =>
-        product.id === productId
-          ? { ...product, isActive: value }
-          : product
-      )
+        product.id === productId ? { ...product, isActive: value } : product,
+      ),
     );
   }
 
@@ -144,25 +146,45 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24 lg:pb-0">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">
-            مدیریت محصولات
-          </h1>
+          <h1 className="text-2xl font-bold text-foreground">مدیریت محصولات</h1>
           <p className="mt-2 text-sm text-muted">
             مدیریت محصولات فروشگاه {storeConfig.name}
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={openCreateForm}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-hover"
-        >
-          <Plus size={17} />
-          افزودن محصول
-        </button>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-bold text-foreground sm:text-2xl">
+              مدیریت محصولات
+            </h1>
+            <p className="mt-2 text-sm text-muted">
+              مدیریت محصولات فروشگاه {storeConfig.name}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={openCreateForm}
+            className="hidden items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-hover lg:inline-flex"
+          >
+            <Plus size={17} />
+            افزودن محصول
+          </button>
+
+          <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/10 bg-background/95 p-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+            <button
+              type="button"
+              onClick={openCreateForm}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-hover active:scale-[0.98]"
+            >
+              <Plus size={19} />
+              افزودن محصول جدید
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -182,9 +204,7 @@ export default function ProductsPage() {
 
         <div className="rounded-xl border border-border bg-surface p-5">
           <p className="text-sm text-muted">محصولات غیرفعال</p>
-          <p className="mt-2 text-2xl font-bold text-muted">
-            {inactiveCount}
-          </p>
+          <p className="mt-2 text-2xl font-bold text-muted">{inactiveCount}</p>
         </div>
       </div>
 
@@ -199,9 +219,7 @@ export default function ProductsPage() {
       />
 
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-foreground">
-          فهرست محصولات
-        </h2>
+        <h2 className="font-semibold text-foreground">فهرست محصولات</h2>
         <span className="text-sm text-muted">
           {filteredProducts.length} محصول
         </span>
